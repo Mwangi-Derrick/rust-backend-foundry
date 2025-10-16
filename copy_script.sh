@@ -5,7 +5,7 @@ SOURCE_FOLDER="./01-variables-mutability-types"
 
 # --- 2. Define the destination directories ---
 # !!! FIX: Directories must be separated by SPACES, not slashes !!!
-DESTINATION_DIRS="02-ownership-secret-source 03-mutable-borrwing-reference 04-structs-impl-blocks 05-enums-pattern-matching"
+DESTINATION_DIRS="02-ownership-secret-sauce 03-mutable-borrowing-reference 04-structs-impl-blocks 05-enums-pattern-matching"
 
 # --- 3. The For Loop ---
 for dir in $DESTINATION_DIRS; do
