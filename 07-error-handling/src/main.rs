@@ -8,20 +8,20 @@
 // Rust doesn’t throw exceptions — you handle everything gracefully at compile time.
 
 // 🧩 Example 1 — Option<T>
-fn find_user(id: u32) -> Option<&'static str> {
-    if id == 1 {
-        Some("derrick")
-    } else {
-        None
-    }
-}
+// fn find_user(id: u32) -> Option<&'static str> {
+//     if id == 1 {
+//         Some("derrick")
+//     } else {
+//         None
+//     }
+// }
 
-fn main() {
-    match find_user(1) {
-        Some(name) => println!("User found: {}", name),
-        None => println!("User not found"),
-    }
-}
+// fn main() {
+//     match find_user(1) {
+//         Some(name) => println!("User found: {}", name),
+//         None => println!("User not found"),
+//     }
+// }
 
 
 // ✅ Output:
@@ -43,22 +43,22 @@ fn main() {
 
 // Now let’s simulate reading a file (or DB call):
 
-use std::fs::File;
-use std::io::{self, Read};
+// use std::fs::File;
+// use std::io::{self, Read};
 
-fn read_config() -> Result<String, io::Error> {
-    let mut file = File::open("config.txt")?; // the '?' propagates errors
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
-    Ok(contents)
-}
+// fn read_config() -> Result<String, io::Error> {
+//     let mut file = File::open("config.txt")?; // the '?' propagates errors
+//     let mut contents = String::new();
+//     file.read_to_string(&mut contents)?;
+//     Ok(contents)
+// }
 
-fn main() {
-    match read_config() {
-        Ok(c) => println!("Config loaded:\n{}", c),
-        Err(e) => println!("Error reading config: {}", e),
-    }
-}
+// fn main() {
+//     match read_config() {
+//         Ok(c) => println!("Config loaded:\n{}", c),
+//         Err(e) => println!("Error reading config: {}", e),
+//     }
+// }
 
 
 // ✅ Explanation:
@@ -88,9 +88,16 @@ fn main() {
 
 // In main(), handle both cases with a match
  
-fn divide(a: f64, b: f64) -> Result<f64, String>
+fn divide(a: f64, b: f64) -> Result<f64, String>{
+if b == 0.0 {
+Err("Cannot divide by zero".into())
+} else {
+    Ok(a / b)
+}
+}
 fn main(){
-    match{
-        
+    match divide(20.0,2.0) {
+      Ok(e) => println!("Error: {}", e),
+      Err(result) => println!("cannot divide by zero"),
     }
 }

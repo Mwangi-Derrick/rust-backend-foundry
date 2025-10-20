@@ -20,8 +20,8 @@ fn print_length(s: &String) {
     println!("The length of '{}' is {}", s, len);
 }
 
-“Notice the &name when calling the function? That’s a borrow.
-We’re saying: hey, print_length, you can look at this data, but don’t take ownership of it.
-This lets us use name again in main() — and Rust’s compiler guarantees we can’t accidentally mess with memory safety. No segfaults, no leaks, no GC needed.”
+// “Notice the &name when calling the function? That’s a borrow.
+// We’re saying: hey, print_length, you can look at this data, but don’t take ownership of it.
+// This lets us use name again in main() — and Rust’s compiler guarantees we can’t accidentally mess with memory safety. No segfaults, no leaks, no GC needed.”
 
 

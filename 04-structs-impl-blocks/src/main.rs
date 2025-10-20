@@ -9,24 +9,24 @@
 // 🧩 Example 1: Basic Struct
 
 
-struct Startup {
-    name: String,
-    category: String,
-    monthly_revenue: f64,
-}
+// struct Startup {
+//     name: String,
+//     category: String,
+//     monthly_revenue: f64,
+// }
 
-fn main() {
-    let summafy = Startup {
-        name: String::from("Summafy.io"),
-        category: String::from("AI & Productivity"),
-        monthly_revenue: 1200.50,
-    };
+// fn main() {
+//     let summafy = Startup {
+//         name: String::from("Summafy.io"),
+//         category: String::from("AI & Productivity"),
+//         monthly_revenue: 1200.50,
+//     };
 
-    println!(
-        "{} is in {} category and earns ${} monthly",
-        summafy.name, summafy.category, summafy.monthly_revenue
-    );
-}
+//     println!(
+//         "{} is in {} category and earns ${} monthly",
+//         summafy.name, summafy.category, summafy.monthly_revenue
+//     );
+// }
 // // 🧠 Concept:
 
 // // struct defines the shape of your data

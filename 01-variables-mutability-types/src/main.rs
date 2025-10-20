@@ -27,11 +27,11 @@ fn main() {
     println!("s1 = {}, s2 = {}", s1, s2);
 }
 
-🧠 Concept:
+// 🧠 Concept:
 
-let = immutable
+// let = immutable
 
-let mut = mutable
+// let mut = mutable
 
-println!() is a macro, not a function — that’s why it has !
+// println!() is a macro, not a function — that’s why it has !
 
