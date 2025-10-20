@@ -5,21 +5,21 @@
 // Enums are how Rust represents multiple possible states of a value — like Result, Option, or message types in your outbox service later.
 // 🧩 Example 1 — Basic Enum
 
-enum MessageType {
-    Upload,
-    Payment,
-    Notification,
-}
+// enum MessageType {
+//     Upload,
+//     Payment,
+//     Notification,
+// }
 
-fn main() {
-    let msg = MessageType::Upload;
+// fn main() {
+//     let msg = MessageType::Upload;
 
-    match msg {
-        MessageType::Upload => println!("Processing an upload message..."),
-        MessageType::Payment => println!("Handling a payment event..."),
-        MessageType::Notification => println!("Sending notification..."),
-    }
-}
+//     match msg {
+//         MessageType::Upload => println!("Processing an upload message..."),
+//         MessageType::Payment => println!("Handling a payment event..."),
+//         MessageType::Notification => println!("Sending notification..."),
+//     }
+// }
 
 // 🧠 Concept:
 
