@@ -36,7 +36,7 @@ function Invoke-SetupLessonCargo {
 
             # 1. Create Cargo.toml for the lesson
             if ($Force -or -not (Test-Path $cargoTomlPath)) {
-                # Updated Cargo.toml template to reference workspace dependencies directly
+                # Corrected Cargo.toml template: Merged [features] sections
                 $cargoTomlContent = @"
 [package]
 name = "$($lessonName.ToLower() -replace '-', '_')"
@@ -63,9 +63,14 @@ thiserror = { workspace = true }
 [dev-dependencies]
 criterion = { workspace = true }
 
-[[bench]]
-name = "$($lessonName.ToLower() -replace '-', '_')_benchmark"
-harness = false
+[features]
+default = []
+ffi_python = ["pyo3"]
+ffi_wasm = ["wasm-bindgen", "worker"]
+message_brokers = ["lapin", "async-nats"]
+sql_features = ["sqlx"]
+error_handling = ["thiserror"]
+bench = ["criterion"]
 "@
                 Set-Content -Path $cargoTomlPath -Value $cargoTomlContent
                 Write-Host "    Created Cargo.toml" -ForegroundColor DarkGreen
@@ -115,14 +120,10 @@ harness = false
     if ($gitignoreContent -notmatch "^/target/$" -and $gitignoreContent -notmatch "^target/$") {
         Add-Content -Path $gitignorePath -Value "`n/target/`n" # Add /target/ if not present
         Write-Host "Added /target/ to .gitignore" -ForegroundColor DarkGreen
-    } else {
-        Write-Host "/target/ already in .gitignore. Skipping." -ForegroundColor DarkYellow
     }
     if ($gitignoreContent -notmatch "^Cargo.lock$") {
         Add-Content -Path $gitignorePath -Value "Cargo.lock`n" # Add Cargo.lock if not present
         Write-Host "Added Cargo.lock to .gitignore" -ForegroundColor DarkGreen
-    } else {
-        Write-Host "Cargo.lock already in .gitignore. Skipping." -ForegroundColor DarkYellow
     }
 
     Write-Host "\nRunning cargo build --workspace to verify setup..." -ForegroundColor Green
