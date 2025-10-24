@@ -1,0 +1,112 @@
+[workspace]
+members = [
+    "Lesson-01-1-Variables-Mutability-Shadowing", 
+    "Lesson-01-2-Primitive-Types-Type-Inference", 
+    "Lesson-01-3-String-vs-str-vs-slices", 
+    "Lesson-01-4-Control-Flow-Loops-and-Match-Statements", 
+    "Lesson-02-1-Ownership-Model", 
+    "Lesson-02-2-Move-Semantics-vs-Clone-vs-Copy", 
+    "Lesson-02-3-Borrowing-References", 
+    "Lesson-02-4-Mutable-vs-Immutable-References", 
+    "Lesson-02-5-Lifetimes-Explained-Visually", 
+    "Lesson-02-6-Function-Lifetimes", 
+    "Lesson-02-7-Structs-with-References-Lifetime-Parameters", 
+    "Lesson-03-1-Structs-Tuples-and-impl-Blocks", 
+    "Lesson-03-2-Associated-Functions-vs-Methods", 
+    "Lesson-03-3-Enums-and-Pattern-Matching-Mastery", 
+    "Lesson-03-4-Option-T-and-Result-T-E-patterns", 
+    "Lesson-04-1-Defining-Traits", 
+    "Lesson-04-2-Generics", 
+    "Lesson-04-3-Trait-Bounds-and-Where-Clauses", 
+    "Lesson-04-4-Blanket-Implementations-and-Default-Methods", 
+    "Lesson-04-5-Trait-Objects-vs-Static-Dispatch", 
+    "Lesson-05-1-Result-T-E-and-Operator", 
+    "Lesson-05-2-Custom-Error-Types", 
+    "Lesson-05-3-ThisError-and-Anyhow-Crates", 
+    "Lesson-05-4-Handling-Panics-and-Recoverability", 
+    "Lesson-06-1-Reading-and-Writing-Files", 
+    "Lesson-06-2-Buffered-IO-and-Error-Propagation", 
+    "Lesson-06-3-Practical-Example-File-based-Outbox-Simulation", 
+    "Lesson-07-1-Intro-to-async-await", 
+    "Lesson-07-2-Futures-and-Tasks-Explained", 
+    "Lesson-07-3-Tokio-Fundamentals", 
+    "Lesson-07-4-Async-Error-Handling-and-Cancellation", 
+    "Lesson-07-5-Real-Example-Async-Outbox-Relay", 
+    "Lesson-08-1-MPSC-and-Broadcast-Channels", 
+    "Lesson-08-2-Select-and-Graceful-Shutdowns", 
+    "Lesson-08-3-Actor-Model-and-Message-Passing-Simulation", 
+    "Lesson-09-1-Mod-Pub-and-use", 
+    "Lesson-09-2-Creating-Library-Crates", 
+    "Lesson-09-3-Multi-crate-Workspaces", 
+    "Lesson-09-4-Real-world-Modular-Outbox-Bridge-Layout", 
+    "Lesson-10-1-Tokio-vs-Async-Std-vs-Smol", 
+    "Lesson-10-2-Background-Worker-Pool", 
+    "Lesson-10-3-Fan-Out-Pattern-using-Broadcast-Channels", 
+    "Lesson-10-4-CPU-bound-work-with-spawn_blocking", 
+    "Lesson-10-5-Graceful-Shutdowns-with-select", 
+    "Lesson-11-1-Rc-Arc-and-Reference-Counting", 
+    "Lesson-11-2-RefCell-Interior-Mutability", 
+    "Lesson-11-3-Mutex-and-RwLock", 
+    "Lesson-11-4-Practical-Async-Cache-or-Pool-with-Lifetimes", 
+    "Lesson-12-1-PyO3-and-Maturin-Basics", 
+    "Lesson-12-2-Safe-FFI-and-no_mangle-extern-C", 
+    "Lesson-12-3-Rust-Shared-Libraries-in-Go-via-cgo", 
+    "Lesson-12-4-WASM-wasm-bindgen", 
+    "Lesson-12-5-Deploying-to-Cloudflare-Workers", 
+    "Lesson-13-1-Trait-Objects-and-dyn-Trait", 
+    "Lesson-13-2-PhantomData-and-Zero-Cost-Abstractions", 
+    "Lesson-13-3-Lifetime-Generics-Traits", 
+    "Lesson-13-4-Higher-Rank-Trait-Bounds-HRTBs", 
+    "Lesson-13-5-Associated-Types-vs-Generics", 
+    "Lesson-13-6-GATs-Generic-Associated-Types-in-async-traits", 
+    "Lesson-14-1-Designing-the-Architecture", 
+    "Lesson-14-2-Outbox-Store", 
+    "Lesson-14-3-Message-Relay", 
+    "Lesson-14-4-Retry-Logic-with-Exponential-Backoff", 
+    "Lesson-14-5-Parallel-Processing-with-join-rayon", 
+    "Lesson-14-6-Graceful-Shutdown-Cleanup", 
+    "Lesson-14-7-Logging-Observability-with-tracing", 
+    "Lesson-15-1-Benchmarking-with-Criterion-rs", 
+    "Lesson-15-2-flamegraph-perf-Tools", 
+    "Lesson-15-3-Lock-Contention-Async-Stalls", 
+    "Lesson-15-4-Unsafe-Zones-and-Codegen-Intuition", 
+    "Lesson-16-1-Building-Static-Binaries", 
+    "Lesson-16-2-Dockerizing-Rust-Services", 
+    "Lesson-16-3-GitHub-Actions-CI-CD-Pipeline", 
+    "Lesson-16-4-Versioning-with-cargo-release", 
+    "Lesson-16-5-Deploying-to-Cloud-Run-or-Fly-io", 
+    "Lesson-17-1-Async-Agents-with-Traits-Tasks", 
+    "Lesson-17-2-Heartbeat-Health-Ping-Services", 
+    "Lesson-17-3-Self-recovering-Workers", 
+    "Lesson-17-3-Self-recovering-Workers-Supervisor-Tree", 
+    "Lesson-17-4-Message-Flow-with-Trait-based-Agents", 
+    "Lesson-17-5-Embedding-AI-Inference-Pipelines", 
+    "Lesson-18-1-Zero-Copy-Data-Processing-with-Slices", 
+    "Lesson-18-2-Streaming-File-Processing-with-Async-Buffers", 
+    "Lesson-18-3-Parallel-Tokenization-and-Chunking", 
+    "Lesson-18-4-Integrating-Rust-into-Python-AI-Pipelines", 
+    "Lesson-18-5-Benchmark-Rust-vs-Python-Preprocessing"
+] # This will be populated by the setup script
+
+# Common dependencies for all lessons
+[workspace.dependencies]
+anyhow = "1.0"
+async-trait = "0.1"
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+rand = "0.8"
+rayon = "1.5"
+
+# FFI dependencies
+pyo3 = { version = "0.19", features = ["extension-module"] }
+wasm-bindgen = "0.2"
+worker = "0.1" # For Cloudflare Workers
+lapin = { version = "0.3", default-features = false, features = ["tokio", "rustls"] }
+async-nats = "0.29"
+sqlx = { version = "0.7", features = ["runtime-tokio", "postgres", "macros"] }
+thiserror = "1.0"
+
+# Dev dependencies (e.g., for benchmarking)
+criterion = { version = "0.4", features = ["html_reports"] }
+
