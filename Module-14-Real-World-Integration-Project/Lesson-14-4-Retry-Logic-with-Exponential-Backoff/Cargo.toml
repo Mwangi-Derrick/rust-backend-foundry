@@ -1,33 +1,16 @@
-[package]
+﻿[package]
 name = "lesson_14_4_retry_logic_with_exponential_backoff"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 anyhow = { workspace = true }
-async-trait = { workspace = true }
-tokio = { workspace = true }
-tracing = { workspace = true }
-tracing-subscriber = { workspace = true }
 rand = { workspace = true }
-rayon = { workspace = true }
-pyo3 = { workspace = true }
-wasm-bindgen = { workspace = true }
-worker = { workspace = true }
-lapin = { workspace = true }
-async-nats = { workspace = true }
-sqlx = { workspace = true }
-thiserror = { workspace = true }
+tokio = { workspace = true }
 
-# Dev dependencies (e.g., for benchmarking)
 [dev-dependencies]
 criterion = { workspace = true }
 
-[features]
-default = []
-ffi_python = ["pyo3"]
-ffi_wasm = ["wasm-bindgen", "worker"]
-message_brokers = ["lapin", "async-nats"]
-sql_features = ["sqlx"]
-error_handling = ["thiserror"]
-bench = ["criterion"]
+[[bench]]
+name = "lesson_14_4_retry_logic_with_exponential_backoff_benchmark"
+harness = false
