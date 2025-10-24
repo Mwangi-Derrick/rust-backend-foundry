@@ -12,8 +12,7 @@ function Invoke-RustNav {
         [string]$Target = ""
     )
 
-    $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
-    $rootPath = $scriptPath # Assuming the script is in the repo root
+    $rootPath = $PSScriptRoot
 
     function Get-LessonPath {
         Param(
@@ -23,13 +22,13 @@ function Invoke-RustNav {
         $modulePattern = "Module-$ModuleNum-*"
         $lessonPattern = "Lesson-$ModuleNum-$LessonNum-*"
 
-        $moduleDir = Get-ChildItem -Path $rootPath -Directory -Filter $modulePattern | Select-Object -First 1
+        $moduleDir = Get-ChildItem -Path $rootPath -Filter $modulePattern | Where-Object {$_.PSIsContainer} | Select-Object -First 1
         if (-not $moduleDir) {
             Write-Host "Error: Module $ModuleNum not found." -ForegroundColor Red
             return $null
         }
 
-        $lessonDir = Get-ChildItem -Path $moduleDir.FullName -Directory -Filter $lessonPattern | Select-Object -First 1
+        $lessonDir = Get-ChildItem -Path $moduleDir.FullName -Filter $lessonPattern | Where-Object {$_.PSIsContainer} | Select-Object -First 1
         if (-not $lessonDir) {
             Write-Host "Error: Lesson $ModuleNum.$LessonNum not found in module '$($moduleDir.Name)'." -ForegroundColor Red
             return $null
@@ -40,17 +39,30 @@ function Invoke-RustNav {
     switch ($Command) {
         "list" {
             Write-Host "Rust Masterclass Curriculum:" -ForegroundColor Green
-            $moduleDirs = Get-ChildItem -Path $rootPath -Directory -Filter "Module-*" | Sort-Object Name
+            $moduleDirs = Get-ChildItem -Path $rootPath -Filter "Module-*" | Where-Object {$_.PSIsContainer} | Sort-Object Name
             foreach ($moduleDir in $moduleDirs) {
-                # Corrected: Use ${1} and ${2} for backreferences
-                $moduleName = $moduleDir.Name -replace "Module-(\d+)-?(.+)", "${1}: ${2}"
-                Write-Host "  $moduleName" -ForegroundColor Cyan
+                if ($moduleDir.Name -match "^Module-(\d+)(?:-(.+))?$") {
+                    $moduleNumber = $Matches[1]
+                    $moduleTitle = if ($Matches.ContainsKey(2)) { $Matches[2] -replace '-', ' ' } else { "" }
+                    # Corrected: Use ${} to delimit variable names
+                    $moduleName = "  ${moduleNumber}: $moduleTitle"
+                } else {
+                    $moduleName = "  " + $moduleDir.Name # Fallback if regex doesn't match
+                }
+                Write-Host $moduleName -ForegroundColor Cyan
 
-                $lessonDirs = Get-ChildItem -Path $moduleDir.FullName -Directory -Filter "Lesson-*" | Sort-Object Name
+                $lessonDirs = Get-ChildItem -Path $moduleDir.FullName -Filter "Lesson-*" | Where-Object {$_.PSIsContainer} | Sort-Object Name
                 foreach ($lessonDir in $lessonDirs) {
-                    # Corrected: Use ${1}, ${2}, and ${3} for backreferences
-                    $lessonName = $lessonDir.Name -replace "Lesson-(\d+)-(\d+)-?(.+)", "  ${1}.${2}: ${3}"
-                    Write-Host "    $lessonName" -ForegroundColor Yellow
+                    if ($lessonDir.Name -match "^Lesson-(\d+)-(\d+)(?:-(.+))?$") {
+                        $lessonModuleNumber = $Matches[1]
+                        $lessonNumber = $Matches[2]
+                        $lessonTitle = if ($Matches.ContainsKey(3)) { $Matches[3] -replace '-', ' ' } else { "" }
+                        # Corrected: Use ${} to delimit variable names
+                        $lessonName = "    ${lessonModuleNumber}.${lessonNumber}: $lessonTitle"
+                    } else {
+                        $lessonName = "    " + $lessonDir.Name # Fallback
+                    }
+                    Write-Host $lessonName -ForegroundColor Yellow
                 }
             }
         }
@@ -60,10 +72,9 @@ function Invoke-RustNav {
                 return
             }
             
-            # Normalize target format (e.g., 1.1, 01.01, 1-1, 01-1)
-            if ($Target -match "^(\d+)[\\.-](\d+)$") {
+            if ($Target -match "^(\d+)[\.-](\d+)$") {
                 $moduleNum = $Matches[1].PadLeft(2, '0')
-                $lessonNum = $Matches[2].PadLeft(1, '0') # Lessons can be 1.1, 1.10, 1.100
+                $lessonNum = $Matches[2].PadLeft(1, '0')
             } else {
                 Write-Host "Error: Invalid target format. Use M.L (e.g., 1.1, 01.01)." -ForegroundColor Red
                 return
@@ -85,14 +96,14 @@ function Invoke-RustNav {
             Write-Host "  Invoke-RustNav list"
             Write-Host "  Invoke-RustNav goto 02.5"
             Write-Host "\nTo make 'rust_nav' an alias, add this to your PowerShell profile:" -ForegroundColor DarkYellow
-            Write-Host "  function rust_nav { Invoke-RustNav @args }"
-            Write-Host "  Set-Alias -Name nav -Value rust_nav"
+            Write-Host "  . 'C:\Users\user\Documents\projects\rust_basics\rust_nav.ps1'"
+            Write-Host "  Set-Alias -Name nav -Value Invoke-RustNav"
         }
     }
 }
 
 # To make it easier to use, you can add an alias to your PowerShell profile.
 # For example, add the following to your $PROFILE file:
-# function rust_nav { Invoke-RustNav @args }
-# Set-Alias -Name nav -Value rust_nav
+# . 'C:\Users\user\Documents\projects\rust_basics\rust_nav.ps1'
+# Set-Alias -Name nav -Value Invoke-RustNav
 # Then you can just type 'nav list' or 'nav goto 1.1'
