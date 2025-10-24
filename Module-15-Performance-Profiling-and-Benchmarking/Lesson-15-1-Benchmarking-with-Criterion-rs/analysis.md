@@ -1,0 +1,94 @@
+# Lesson 15.1: Benchmarking with Criterion.rs
+
+## 🧠 Concept Summary
+
+This lesson introduces **`Criterion.rs`**, a powerful and statistically sound benchmarking library for Rust. Benchmarking is a critical practice for measuring, understanding, and optimizing the performance of your code.
+
+- **Why Benchmark?**
+    - **Measure, Don't Guess:** Performance intuitions can be misleading. Benchmarking provides objective, quantifiable data.
+    - **Identify Bottlenecks:** Helps pinpoint the slowest parts of your code, guiding optimization efforts.
+    - **Track Regressions:** Ensures that new code changes don't inadvertently degrade performance.
+    - **Compare Implementations:** Allows for objective comparison of different algorithms, data structures, or approaches.
+
+- **`Criterion.rs` Features:**
+    - **Statistical Analysis:** Runs benchmarks multiple times and uses statistical methods to provide reliable results.
+    - **Regression Detection:** Can automatically detect if a code change has caused a performance regression.
+    - **Detailed Reports:** Generates HTML reports with graphs, CSV data, and other insights.
+
+## ⚙️ Setup
+
+To use `Criterion.rs`, you need to add it as a `dev-dependency` in your `Cargo.toml`:
+
+```toml
+[dev-dependencies]
+criterion = { version = "0.4", features = ["html_reports"] }
+```
+
+You also need to configure your `Cargo.toml` to enable benchmarks. This tells Cargo not to use its default test harness for benchmarks, allowing `Criterion.rs` to take over:
+
+```toml
+[[bench]]
+name = "my_benchmark" # Name of your benchmark file (e.g., benches/my_benchmark.rs)
+harness = false
+```
+
+## 🧩 Code Walkthrough
+
+This code is typically placed in a separate benchmark file (e.g., `benches/my_benchmark.rs`) within your project.
+
+### Example Benchmark File (`benches/my_benchmark.rs`)
+
+```rust
+// benches/my_benchmark.rs
+
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
+
+fn fibonacci_recursive(n: u64) -> u64 { /* ... */ }
+fn fibonacci_iterative(n: u64) -> u64 { /* ... */ }
+
+fn criterion_benchmark(c: &mut Criterion) {
+    c.bench_function("fib_recursive 20", |b| b.iter(|| fibonacci_recursive(black_box(20))));
+    c.bench_function("fib_iterative 20", |b| b.iter(|| fibonacci_iterative(black_box(20))));
+}
+
+criterion_group!(benches, criterion_benchmark);
+criterion_main!(benches);
+```
+
+- **`criterion_group!` and `criterion_main!`:** These macros are used to register your benchmark functions with `Criterion.rs`.
+- **`Criterion` struct:** The `criterion_benchmark` function receives a `&mut Criterion` instance, which is used to define and run benchmarks.
+- **`c.bench_function(...)`:** This method defines a benchmark. It takes a name for the benchmark and a closure that performs the operation to be measured.
+- **`b.iter(|| ...)`:** The `iter` method runs the provided closure repeatedly until `Criterion.rs` has enough samples for statistical analysis.
+- **`black_box(...)`:** This function (from `criterion`) is used to prevent the Rust compiler from optimizing away the code you are trying to benchmark. It tells the compiler that the value might be used in an unknown way, forcing it to actually compute the result.
+
+### Running Benchmarks
+
+To run the benchmarks, navigate to your project root and use:
+
+```bash
+cargo bench
+```
+
+After running, `Criterion.rs` will output results to the console and generate detailed HTML reports in the `target/criterion` directory.
+
+## ⚔️ Cross-Language Insights
+
+- **Golang:** Go has built-in benchmarking support (`go test -bench=.`). It's integrated with the testing framework and provides basic statistical analysis.
+
+- **TypeScript (Node.js):** Benchmarking in Node.js often involves libraries like `benchmark.js` or custom timing functions using `performance.now()`.
+
+- **C++:** C++ benchmarking can be done with libraries like Google Benchmark or custom timing code using `std::chrono`.
+
+## 🚀 Practical Reflection
+
+- **Microbenchmarking vs. Macrobenchmarking:** `Criterion.rs` is excellent for microbenchmarking (measuring small, isolated code units). For macrobenchmarking (measuring end-to-end application performance), you might use tools like `perf` or `flamegraph` (covered in the next lesson).
+
+- **Reproducibility:** Ensure your benchmarks are reproducible. Factors like CPU frequency scaling, background processes, and compiler optimizations can affect results.
+
+- **Interpreting Results:** Don't just look at the average. `Criterion.rs` provides statistical distributions (mean, median, standard deviation) which are crucial for understanding performance characteristics.
+
+## 🧩 Self-Review Prompts
+
+- Write a benchmark for a function that sorts a `Vec<u32>` using different sorting algorithms (e.g., `sort()` vs. `sort_unstable()`).
+- How would you use `Criterion.rs` to compare the performance of `String::from` vs. `to_string()`?
+- Explore the HTML reports generated by `Criterion.rs`. What kind of information do they provide?
