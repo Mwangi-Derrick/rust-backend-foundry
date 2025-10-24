@@ -40,3 +40,12 @@ Thumbs.db
 
 # Locally generated documentation (using `cargo doc`)
 /doc/
+/target/
+
+Cargo.lock
+
+
+/target/
+
+Cargo.lock
+
