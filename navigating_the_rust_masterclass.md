@@ -1,125 +1,344 @@
 # Navigating the Rust Masterclass Repository
 
-This guide will help you use the `rust_nav.ps1` PowerShell script to easily navigate this deeply nested Rust Masterclass repository.
+This guide will help you set up and use the navigation scripts to easily explore this deeply nested Rust Masterclass repository. Choose your platform below: PowerShell (Windows) or Bash (Linux/Mac).
 
-## 🚀 The `rust_nav.ps1` Script
+---
 
-I've created a custom PowerShell script named `rust_nav.ps1` in the root of this repository. This script lets you list all modules and lessons, and quickly `cd` into any specific lesson directory using a simple shorthand.
+## 📍 Navigation Scripts Overview
 
-### Script Location
+Two custom scripts are included to make navigation effortless:
 
-You can find the script here:
-`C:\Users\user\Documents\projects\rust_basics\rust_nav.ps1`
+- **`rust_nav.ps1`** — For PowerShell (Windows users)
+- **`rust_nav.sh`** — For Bash/Zsh (Linux/Mac users)
 
-## 🛠️ Setup: Making the Script Easily Accessible
+Both scripts provide identical functionality: list all modules/lessons, and jump directly to any lesson with a simple command.
 
-For the best experience, you'll want to make this script callable directly from your PowerShell terminal without typing the full path every time. This is done by adding a function/alias to your PowerShell profile.
+---
 
-### Step 1: Allow Script Execution (if needed)
+# 🪟 WINDOWS: PowerShell Setup
 
-If you haven't already, you might need to change your PowerShell execution policy to allow scripts to run. You only need to do this once.
+## 🚀 What You'll Get
 
-1. Open PowerShell as an Administrator.
-2. Run the command:
-    ```powershell
-    Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-    ```
-    Confirm with `Y` if prompted.
+After setup, you'll be able to use the `nav` command from anywhere in your terminal:
+
+```powershell
+nav list                  # List all modules and lessons
+nav goto 1.1             # Jump to Module 1, Lesson 1
+nav goto 6.2             # Jump to Module 6, Lesson 2
+nav help                 # Show all commands
+```
+
+## 🛠️ Setup Instructions
+
+### Step 1: Allow Script Execution (One-Time)
+
+Open **PowerShell as Administrator** and run:
+
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+Confirm with `Y` when prompted. This allows PowerShell scripts to run from your profile.
 
 ### Step 2: Edit Your PowerShell Profile
 
-Your PowerShell profile is a script that runs every time PowerShell starts, allowing you to customize your environment with aliases, functions, and variables.
+Open your profile in a text editor:
 
-1. Open your PowerShell profile in a text editor:
-    ```powershell
-    notepad $PROFILE
-    ```
-    (If the file doesn't exist, `notepad` will offer to create it.)
+```powershell
+notepad $PROFILE
+```
 
-2. Add the following lines to the end of your `$PROFILE` file. These lines define a function `rust_nav` that wraps our script and sets a convenient alias `nav` to call it.
-    ```powershell
-    # Rust Masterclass Navigation Script Alias
-    # Ensure the path to rust_nav.ps1 is correct for your system.
-    function rust_nav { & "C:\Users\user\Documents\projects\rust_basics\rust_nav.ps1" -Command $args }
-    Set-Alias -Name nav -Value rust_nav
-    ```
-    **Important:** Double-check that the path `C:\Users\user\Documents\projects\rust_basics\rust_nav.ps1` matches the actual location of the script on your system.
+**If the file doesn't exist:** Click "Create" when Notepad offers to create it.
 
-3. Save and close the `$PROFILE` file.
+**Add these lines to the end of the file:**
+
+```powershell
+# =====================================================
+# Rust Masterclass Navigation Function
+# =====================================================
+# YOU MUST UPDATE THIS PATH TO MATCH YOUR SYSTEM
+$RUST_NAV_SCRIPT = "C:\Users\$env:USERNAME\Documents\projects\rust-backend-foundry\rust_nav.ps1"
+
+function nav {
+    if (Test-Path $RUST_NAV_SCRIPT) {
+        & $RUST_NAV_SCRIPT @args
+    } else {
+        Write-Host "Error: rust_nav.ps1 not found at $RUST_NAV_SCRIPT" -ForegroundColor Red
+        Write-Host "Please update the path in your PowerShell profile." -ForegroundColor Yellow
+    }
+}
+
+# =====================================================
+```
+
+**⚠️ IMPORTANT:** Verify the path matches your actual rust-backend-foundry location. If it's elsewhere, update the `$RUST_NAV_SCRIPT` path accordingly.
 
 ### Step 3: Reload Your PowerShell Profile
 
-Either restart your PowerShell terminal, or run the following command to reload your profile in the current session:
+Either:
+- Restart PowerShell entirely, OR
+- Run this command in your current session:
 
 ```powershell
 . $PROFILE
 ```
 
-(Note the `.` followed by a space before `$PROFILE`.)
+### Step 4: Verify Setup
 
-## ✨ Usage: Navigating with Ease
+Test the setup by running:
 
-Now that the setup is complete, you can use the `nav` alias from anywhere in your terminal.
+```powershell
+nav help
+```
 
-### 1. Listing All Modules and Lessons
+You should see help information. If you get an error about the script not being found, double-check the path in Step 2.
 
-To get an overview of the entire curriculum, simply use the `list` command:
+---
+
+## ✨ PowerShell Usage Examples
+
+### List All Modules and Lessons
 
 ```powershell
 nav list
 ```
 
-**Expected Output Example:**
+**Output Example:**
 ```
 Rust Masterclass Curriculum:
   01: Core Foundations
     01.1: Variables, Mutability & Shadowing
     01.2: Primitive Types & Type Inference
-    ...
+    01.3: String vs str vs slices
+    01.4: Control Flow, Loops & Match Statements
   02: Ownership, Borrowing & Lifetimes
     02.1: Ownership Model
     02.2: Move Semantics vs Clone vs Copy
     ...
 ```
 
-### 2. Going Directly to a Specific Lesson
+### Jump to a Specific Lesson
 
-To jump straight into any lesson, use the `goto` command followed by the module and lesson number in `M.L` format:
+```powershell
+nav goto 1.1                # Module 1, Lesson 1
+nav goto 6.2                # Module 6, Lesson 2
+nav goto 10.5               # Module 10, Lesson 5
+```
 
-*   **Example: Go to Module 1, Lesson 1**
-    ```powershell
-    nav goto 1.1
-    ```
-    This will change your current directory to: 
-    `C:\Users\user\Documents\projects\rust_basics\Module-01-Core-Foundations\Lesson-01-1-Variables-Mutability-Shadowing`
+The script accepts flexible input formats:
+- `nav goto 1.1` ✅
+- `nav goto 01.01` ✅
+- `nav goto 1-1` ✅
 
-*   **Example: Go to Module 10, Lesson 5**
-    ```powershell
-    nav goto 10.5
-    ```
-    This will take you to: 
-    `C:\Users\user\Documents\projects\rust_basics\Module-10-Advanced-Concurrency-Patterns\Lesson-10-5-Graceful-Shutdowns-with-select`
-
-*   **Flexible Input:** The `goto` command is smart enough to handle various formats:
-    *   `nav goto 1.1`
-    *   `nav goto 01.01`
-    *   `nav goto 1-1`
-    *   `nav goto 01-1`
-
-### 3. Getting Help
-
-If you ever forget the commands, just type:
+### Get Help
 
 ```powershell
 nav help
 ```
 
-## 🎯 How This Enhances Your Learning
+---
 
-By simplifying navigation, you can now:
+# 🐧 LINUX/MAC: Bash/Zsh Setup
 
--   **Focus on Content:** Spend less time battling the file system and more time delving into the `main.rs` code and `analysis.md` explanations.
--   **Rapid Context Switching:** Quickly jump between related lessons to review concepts or see how they evolve across modules.
--   **Fluid Exploration:** Encourage curiosity! Easily explore lessons that pique your interest without tedious `cd` commands.
+## 🚀 What You'll Get
 
-Happy Rusting!
+After setup, you'll be able to use the `nav` command from anywhere in your terminal:
+
+```bash
+nav list                  # List all modules and lessons
+nav goto 1.1             # Jump to Module 1, Lesson 1
+nav goto 6.2             # Jump to Module 6, Lesson 2
+nav help                 # Show all commands
+```
+
+## 🛠️ Setup Instructions
+
+### Step 1: Make the Script Executable
+
+First, ensure the script has execute permissions:
+
+```bash
+chmod +x ~/Documents/projects/rust-backend-foundry/rust_nav.sh
+```
+
+**Adjust the path if needed** if rust-backend-foundry is in a different location.
+
+### Step 2: Edit Your Shell Profile
+
+Depending on your shell, edit the appropriate file:
+
+**For Bash:**
+```bash
+nano ~/.bashrc
+```
+
+**For Zsh:**
+```bash
+nano ~/.zshrc
+```
+
+**Add these lines to the end:**
+
+```bash
+# =====================================================
+# Rust Masterclass Navigation Alias
+# =====================================================
+# YOU MUST UPDATE THIS PATH TO MATCH YOUR SYSTEM
+export RUST_NAV_SCRIPT="$HOME/Documents/projects/rust-backend-foundry/rust_nav.sh"
+
+alias nav='source "$RUST_NAV_SCRIPT"'
+
+# =====================================================
+```
+
+**⚠️ IMPORTANT:** Verify the path matches your actual rust-backend-foundry location. If it's elsewhere, update the `RUST_NAV_SCRIPT` path accordingly.
+
+**To save and exit (in nano):**
+- Press `Ctrl + X`
+- Press `Y` to confirm
+- Press `Enter` to save
+
+### Step 3: Review Your Shell Profile (Optional)
+
+Verify your changes were saved:
+
+```bash
+# For Bash:
+tail ~/.bashrc
+
+# For Zsh:
+tail ~/.zshrc
+```
+
+### Step 4: Reload Your Shell Profile
+
+Either:
+- Restart your terminal entirely, OR
+- Run this command in your current session:
+
+```bash
+# For Bash:
+source ~/.bashrc
+
+# For Zsh:
+source ~/.zshrc
+```
+
+### Step 5: Verify Setup
+
+Test the setup by running:
+
+```bash
+nav help
+```
+
+You should see help information. If you get an error, double-check the path in Step 2.
+
+---
+
+## ✨ Bash/Zsh Usage Examples
+
+### List All Modules and Lessons
+
+```bash
+nav list
+```
+
+**Output Example:**
+```
+Rust Masterclass Curriculum:
+  01: Core Foundations
+    01.1: Variables, Mutability & Shadowing
+    01.2: Primitive Types & Type Inference
+    01.3: String vs str vs slices
+    01.4: Control Flow, Loops & Match Statements
+  02: Ownership, Borrowing & Lifetimes
+    02.1: Ownership Model
+    02.2: Move Semantics vs Clone vs Copy
+    ...
+```
+
+### Jump to a Specific Lesson
+
+```bash
+nav goto 1.1                # Module 1, Lesson 1
+nav goto 6.2                # Module 6, Lesson 2
+nav goto 10.5               # Module 10, Lesson 5
+```
+
+The script accepts flexible input formats:
+- `nav goto 1.1` ✅
+- `nav goto 01.01` ✅
+- `nav goto 1-1` ✅
+
+### Get Help
+
+```bash
+nav help
+```
+
+---
+
+## 🎯 How Navigation Enhances Your Learning
+
+By setting up these scripts, you can:
+
+- **⚡ Focus on Content:** Spend less time navigating folders and more time diving into `main.rs` code and `analysis.md` explanations.
+- **🔄 Rapid Context Switching:** Quickly jump between related lessons to review concepts or see how they evolve.
+- **🧭 Fluid Exploration:** Explore lessons freely without tedious directory commands.
+- **⏱️ Save Time:** Get to your next lesson in seconds instead of clicking through deep folder hierarchies.
+
+---
+
+## 🐛 Troubleshooting
+
+### PowerShell: "Script cannot be loaded because running scripts is disabled"
+
+**Solution:** Run Step 1 again:
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+### PowerShell: `nav` command not found
+
+**Solution:** 
+1. Verify the path in your profile is correct
+2. Reload your profile: `. $PROFILE`
+3. Restart PowerShell if reloading didn't work
+
+### Bash/Zsh: "command not found"
+
+**Solution:**
+1. Verify the path in ~/.bashrc or ~/.zshrc is correct
+2. Ensure the script is executable: `chmod +x ~/Documents/projects/rust-backend-foundry/rust_nav.sh`
+3. Reload your profile: `source ~/.bashrc` or `source ~/.zshrc`
+
+### Both: "Lesson not found" error
+
+**Solution:** Use `nav list` to see all available lessons, then verify the module and lesson numbers.
+
+---
+
+## 🎓 Example Learning Flow with Navigation
+
+```powershell
+# Windows PowerShell Example
+nav list                    # See all lessons
+nav goto 1.1               # Jump to Module 1, Lesson 1
+cargo run                  # Run the code
+# Read analysis.md, experiment, then:
+nav goto 1.2               # Move to next lesson
+```
+
+```bash
+# Linux/Mac Bash Example
+nav list                    # See all lessons
+nav goto 1.1               # Jump to Module 1, Lesson 1
+cargo run                  # Run the code
+# Read analysis.md, experiment, then:
+nav goto 1.2               # Move to next lesson
+```
+
+---
+
+Happy Rusting! 🦀

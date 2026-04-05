@@ -6,6 +6,68 @@ Welcome, aspiring Rustacean! Your ambition to move beyond surface-level skimming
 
 Mastering Rust isn't just about memorizing syntax; it's about internalizing a new way of thinking about programming, especially concerning memory management, concurrency, and reliability. This guide outlines an effective pedagogical approach to maximize your learning from these lessons.
 
+---
+
+## ⚡ Quick Setup: Use the Navigation Scripts
+
+**Before diving in, set up the navigation scripts.** This repository includes tools to make jumping between lessons effortless:
+
+### PowerShell (Windows) — One-Minute Setup
+
+```powershell
+# 1. Allow scripts (run as Administrator, one-time only)
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# 2. Edit your profile
+notepad $PROFILE
+
+# 3. Add this function to your profile:
+function nav {
+    & "C:\Users\$env:USERNAME\Documents\projects\rust-backend-foundry\rust_nav.ps1" @args
+}
+
+# 4. Reload your profile
+. $PROFILE
+
+# Now use:
+nav list          # See all modules and lessons
+nav goto 1.1      # Jump to Module 1, Lesson 1
+```
+
+### Bash/Zsh (Linux/Mac) — One-Minute Setup
+
+```bash
+# 1. Make script executable
+chmod +x ~/Documents/projects/rust-backend-foundry/rust_nav.sh
+
+# 2. Edit your shell profile
+nano ~/.bashrc    # or ~/.zshrc for Zsh
+
+# 3. Add this to the end:
+alias nav='source ~/Documents/projects/rust-backend-foundry/rust_nav.sh'
+
+# 4. Reload your profile
+source ~/.bashrc  # or ~/.zshrc
+
+# Now use:
+nav list          # See all modules and lessons
+nav goto 1.1      # Jump to Module 1, Lesson 1
+```
+
+**For detailed setup instructions, see [Navigating the Rust Masterclass](navigating_the_rust_masterclass.md).**
+
+Once set up, you'll navigate lessons like this:
+```bash
+nav goto 1.1              # Module 1, Lesson 1
+cargo run                 # Run the code
+# Read analysis.md, experiment...
+nav goto 1.2              # Next lesson
+```
+
+This saves you hundreds of clicks throughout your learning journey!
+
+---
+
 ## 🧠 Core Philosophy: Embrace the Struggle, Own the "Why"
 
 Rust is renowned for its steep learning curve. **Embrace this.** View every compiler error not as a roadblock, but as a conversation with your incredibly strict, yet ultimately benevolent, mentor – the Rust compiler (and especially the Borrow Checker!).
@@ -65,9 +127,18 @@ Approach this repository in a disciplined, iterative manner. Don't rush. The dep
 -   **Engage with the Ecosystem:** Once you feel comfortable with a module, try building a small, personal project that leverages those concepts. The best way to learn is by building.
 -   **Review Periodically:** Rust concepts build on each other. Revisit earlier lessons if you find yourself struggling with later ones. A quick review can often illuminate new connections.
 -   **Persistence Over Speed:** Rust mastery is a marathon, not a sprint. Consistency in your learning, even small blocks of time daily, will yield far greater results than infrequent, long sessions.
+-   **Use the Navigation Scripts:** Don't waste time clicking through nested folders! The `nav` command gets you to any lesson in seconds. It's a small optimization with a big payoff over 18 modules.
 
 ## ✨ Your Transformation Awaits
 
 By diligently following this path – actively engaging with each lesson, embracing experimentation, and understanding the core "Why" – you will accomplish your goal. You will not only dispel your fears of Rust but will develop an intuitive mastery that frees you from constant internet searches for basic reference. This repository will become your trusted companion, transforming you into a highly capable Rustacean ready to build the next generation of safe, performant, and reliable systems.
 
-Now, go forth and conquer!
+### 🎯 Your Next Steps:
+
+1. **Set up the navigation scripts** ([see instructions](navigating_the_rust_masterclass.md)) — saves hundreds of clicks
+2. **Start with Module 1** — Use `nav goto 1.1` to jump there
+3. **Follow the learning cycle** — Read analysis.md → Examine main.rs → Run code → Experiment → Self-review
+4. **Embrace the compiler** — Every error is a teaching moment
+5. **Connect with others** — Share your learnings and build projects
+
+Now, go forth and conquer! 🦀
